@@ -21,7 +21,7 @@ const config = [
         Name: "BSC Mainnet",
         ChainID: 56,
         RPC: "https://speedy-nodes-nyc.moralis.io/03eb35954a0b7ed092444a8e/bsc/mainnet",
-        StartBlock: 18631000,
+        StartBlock: 18630000,
         ScanURL: "https://bscscan.com",
         ERC20List: [
             "0x55d398326f99059fF775485246999027B3197955",
@@ -31,7 +31,6 @@ const config = [
         MonitorAddress: [
             "0xEded14271227967cD24970dbF43CBc580D21A8e7",
             "0x4476B96c00470CB39734187cB0675d995e5a1c8c",
-            "0x10ED43C718714eb63d5aA57B78B54704E256024E"
         ]
     }
 ];

@@ -13,7 +13,7 @@ for (var chainIndex = 0; chainIndex < config.length; chainIndex++) {
   // console.log("lastBN[%s]: %d", config[chainIndex].Name, lastBN[chainIndex])
 }
 
-console.log("length: ", curBN.length, lastBN.length)
+// console.log("length: ", curBN.length, lastBN.length)
 let counter = 0;
 
 async function processApproveMonitor() {
@@ -24,7 +24,11 @@ async function processApproveMonitor() {
     const web3Https = new Web3(config[chainIndex].RPC);
     try {
       lastBN[chainIndex] = await web3Https.eth.getBlockNumber();
-      lastBN[chainIndex] = lastBN[chainIndex] - 1;
+      if (lastBN[chainIndex] > curBN[chainIndex] + 50) {
+        lastBN[chainIndex] = curBN[chainIndex] + 50;
+      } else {
+        lastBN[chainIndex] = lastBN[chainIndex] - 1;
+      }
       if (lastBN[chainIndex] > curBN[chainIndex]) {
         console.log("curBN[%s]: %d", config[chainIndex].Name, curBN[chainIndex])
         console.log("lastBN[%s]: %d", config[chainIndex].Name, lastBN[chainIndex])
