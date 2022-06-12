@@ -34,23 +34,23 @@ async function processApproveMonitor() {
       if (lastBN[chainIndex] > curBN[chainIndex]) {
         console.log("curBN[%s]: %d", config[chainIndex].Name, curBN[chainIndex])
         console.log("lastBN[%s]: %d", config[chainIndex].Name, lastBN[chainIndex])
-        for (var k = 0; k < config[chainIndex].ERC20List.length; k++) {
+        for (var tokenIndex = 0; tokenIndex < config[chainIndex].ERC20List.length; tokenIndex++) {
           const erc20Contract = new web3Https.eth.Contract(
             ERC20ABI,
             // @ts-ignore
-            config[chainIndex].ERC20List[k].toString().toLowerCase()
+            config[chainIndex].ERC20List[tokenIndex].toString().toLowerCase()
           );
           const approvalEvents = await erc20Contract.getPastEvents("Approval", {
             fromBlock: curBN[chainIndex],
             toBlock: lastBN[chainIndex],
           });
-          console.log("approvalEvents length %d of %s: ", approvalEvents.length, config[chainIndex].Name);
+          console.log("approvalEvents length is %d of %s of %s: ", approvalEvents.length, config[chainIndex].ERC20List[tokenIndex], config[chainIndex].Name);
           if (approvalEvents.length > 0) {
-            for (var i = 0; i < approvalEvents.length; i++) {
+            for (var evtIndex = 0; evtIndex < approvalEvents.length; evtIndex++) {
               // Compare moniter address
-              for (var j = 0; j < config[chainIndex].MonitorAddress.length; j++) {
-                if (approvalEvents[i].returnValues.spender.toLowerCase() === config[chainIndex].MonitorAddress[j].toLowerCase()) {
-                  console.log(`      Your Chance! ${config[chainIndex].ScanURL}/tx/${approvalEvents[i].transactionHash}`);
+              for (var monitorIndex = 0; monitorIndex < config[chainIndex].MonitorAddress.length; monitorIndex++) {
+                if (approvalEvents[evtIndex].returnValues.spender.toLowerCase() === config[chainIndex].MonitorAddress[monitorIndex].toLowerCase()) {
+                  console.log(`      Your Chance! ${config[chainIndex].ScanURL}/tx/${approvalEvents[evtIndex].transactionHash}`);
                 }
               }
             }
