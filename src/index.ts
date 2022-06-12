@@ -24,11 +24,13 @@ async function processApproveMonitor() {
     const web3Https = new Web3(config[chainIndex].RPC);
     try {
       lastBN[chainIndex] = await web3Https.eth.getBlockNumber();
+
       if (lastBN[chainIndex] > curBN[chainIndex] + 50) {
         lastBN[chainIndex] = curBN[chainIndex] + 50;
       } else {
         lastBN[chainIndex] = lastBN[chainIndex] - 1;
       }
+
       if (lastBN[chainIndex] > curBN[chainIndex]) {
         console.log("curBN[%s]: %d", config[chainIndex].Name, curBN[chainIndex])
         console.log("lastBN[%s]: %d", config[chainIndex].Name, lastBN[chainIndex])
@@ -42,7 +44,7 @@ async function processApproveMonitor() {
             fromBlock: curBN[chainIndex],
             toBlock: lastBN[chainIndex],
           });
-          console.log("approvalEvents length: ", approvalEvents.length);
+          console.log("approvalEvents length %d of %s: ", approvalEvents.length, config[chainIndex].Name);
           if (approvalEvents.length > 0) {
             for (var i = 0; i < approvalEvents.length; i++) {
               // Compare moniter address
@@ -68,7 +70,6 @@ async function processApproveMonitor() {
 
 async function init() {
   try {
-    processApproveMonitor().then();
     setInterval(async () => processApproveMonitor(), 20000);
   } catch (error) {
     console.log(error);
