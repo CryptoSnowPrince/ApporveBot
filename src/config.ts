@@ -24,11 +24,14 @@ const config = [
         StartBlock: 18631000,
         ScanURL: "https://bscscan.com",
         ERC20List: [
-            "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
+            "0x55d398326f99059fF775485246999027B3197955",
+            "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+            "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
         ],
         MonitorAddress: [
             "0xEded14271227967cD24970dbF43CBc580D21A8e7",
-            "0x4476B96c00470CB39734187cB0675d995e5a1c8c"
+            "0x4476B96c00470CB39734187cB0675d995e5a1c8c",
+            "0x10ED43C718714eb63d5aA57B78B54704E256024E"
         ]
     }
 ];
