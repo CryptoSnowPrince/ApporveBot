@@ -4,6 +4,7 @@ dotenv.config();
 
 const config = [
     {
+        Name: "Ethereum Mainnet",
         ChainID: 1,
         RPC: "https://mainnet.infura.io/v3/9254bae6432742babcfc7d367c7e77cd",
         StartBlock: 14951000,
@@ -17,6 +18,7 @@ const config = [
         ]
     },
     {
+        Name: "BSC Mainnet",
         ChainID: 56,
         RPC: "https://speedy-nodes-nyc.moralis.io/03eb35954a0b7ed092444a8e/bsc/mainnet",
         StartBlock: 18631000,
