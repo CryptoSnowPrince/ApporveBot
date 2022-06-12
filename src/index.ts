@@ -3,48 +3,60 @@ import config from "./config";
 const ERC20ABI = require("./abi");
 
 // @ts-ignore
-const web3Https = new Web3(config[56].RPC);
-const erc20Contract = new web3Https.eth.Contract(
-  ERC20ABI,
-  // @ts-ignore
-  config[56].ERC20List.busd.toString().toLowerCase()
-);
+let curBN: Array<number> = []
+// @ts-ignore
+let lastBN: Array<number> = [];
+for (var chainIndex = 0; chainIndex < config.length; chainIndex++) {
+  curBN.push(config[chainIndex].StartBlock);
+  lastBN.push(curBN[chainIndex]);
+  console.log("curBN[%d]: %d", config[chainIndex].ChainID, curBN[chainIndex])
+  console.log("lastBN[%d]: %d", config[chainIndex].ChainID, lastBN[chainIndex])
+}
 
-let curBN = config[56].StartBlock;
-let lastBN = curBN;
+console.log("length: ", curBN.length, lastBN.length)
 let counter = 0;
 
-/**
- * Process the last auction, update cache and push socials if new auction or respective bid is discovered
- */
 async function processApproveMonitor() {
   console.log("=========== start");
   counter++;
-  try {
-    lastBN = await web3Https.eth.getBlockNumber();
-    lastBN = lastBN - 1;
-    console.log("counter: ", counter);
-    if (lastBN > curBN) {
-      console.log("curBN: ", curBN);
-      console.log("lastBN: ", lastBN);
-      const approvalEvents = await erc20Contract.getPastEvents("Approval", {
-        fromBlock: curBN,
-        toBlock: lastBN,
-      });
-      console.log("approvalEvents length: ", approvalEvents.length);
-      if (approvalEvents.length > 0) {
-          console.log("     approvalEvents:", approvalEvents[0].returnValues);
-        for (let i = 0; i < approvalEvents.length; i++) {
-          // console.log(`     approvalEvents: ${approvalEvents[i].returnValues}`);
-          // Compare moniter address
+  console.log("counter: ", counter);
+  for (var chainIndex = 0; chainIndex < config.length; chainIndex++) {
+    const web3Https = new Web3(config[chainIndex].RPC);
+    try {
+      lastBN[chainIndex] = await web3Https.eth.getBlockNumber();
+      lastBN[chainIndex] = lastBN[chainIndex] - 1;
+      if (lastBN[chainIndex] > curBN[chainIndex]) {
+        console.log("curBN[%d]: %d", config[chainIndex].ChainID, curBN[chainIndex])
+        console.log("lastBN[%d]: %d", config[chainIndex].ChainID, lastBN[chainIndex])
+        for (var k = 0; k < config[chainIndex].ERC20List.length; k++) {
+          const erc20Contract = new web3Https.eth.Contract(
+            ERC20ABI,
+            // @ts-ignore
+            config[chainIndex].ERC20List[k].toString().toLowerCase()
+          );
+          const approvalEvents = await erc20Contract.getPastEvents("Approval", {
+            fromBlock: curBN[chainIndex],
+            toBlock: lastBN[chainIndex],
+          });
+          console.log("approvalEvents length: ", approvalEvents.length);
+          if (approvalEvents.length > 0) {
+            for (var i = 0; i < approvalEvents.length; i++) {
+              // Compare moniter address
+              for (var j = 0; j < config[chainIndex].MonitorAddress.length; j++) {
+                if (approvalEvents[i].returnValues.spender.toLowerCase() === config[chainIndex].MonitorAddress[j].toLowerCase()) {
+                  console.log(`      Your Chance! ${config[56].ScanURL}/tx/${approvalEvents[i].transactionHash}`);
+                }
+              }
+            }
+          }
         }
+        curBN[chainIndex] = lastBN[chainIndex] + 1;
+      } else {
+        console.log("lastBN[chainIndex] < curBN[chainIndex]");
       }
-      curBN = lastBN + 1;
-    } else {
-      console.log("lastBN < curBN");
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
   }
   console.log("=========== end");
   console.log(" ");
@@ -53,9 +65,8 @@ async function processApproveMonitor() {
 async function init() {
   try {
     processApproveMonitor().then();
-    setInterval(async () => processApproveMonitor(), 5000);
+    setInterval(async () => processApproveMonitor(), 20000);
   } catch (error) {
-    curBN = config[56].StartBlock;
     console.log(error);
   }
 }
