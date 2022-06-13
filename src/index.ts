@@ -22,7 +22,7 @@ let counter = 0;
 
 async function processApproveMonitor() {
   while (1) {
-    console.log("=========== start");
+    console.log("=start=");
     counter++;
     console.log("counter: ", counter);
     for (var chainIndex = 0; chainIndex < config.length; chainIndex++) {
@@ -70,8 +70,9 @@ async function processApproveMonitor() {
         console.log(error);
       }
     }
-    console.log("=========== end");
+    console.log("=delay=");
     await sleep(2000)
+    console.log("=end=");
     console.log(" ");
   }
 }
