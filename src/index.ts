@@ -34,6 +34,7 @@ async function processApproveMonitor() {
           lastBN[chainIndex] = curBN[chainIndex] + 999;
         } else {
           lastBN[chainIndex] = lastBN[chainIndex] - 1;
+          await sleep(58000)
         }
 
         if (lastBN[chainIndex] > curBN[chainIndex]) {
