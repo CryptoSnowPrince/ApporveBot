@@ -25,8 +25,8 @@ async function processApproveMonitor() {
     try {
       lastBN[chainIndex] = await web3Https.eth.getBlockNumber();
 
-      if (lastBN[chainIndex] > curBN[chainIndex] + 499) {
-        lastBN[chainIndex] = curBN[chainIndex] + 499;
+      if (lastBN[chainIndex] > curBN[chainIndex] + 99) {
+        lastBN[chainIndex] = curBN[chainIndex] + 99;
       } else {
         lastBN[chainIndex] = lastBN[chainIndex] - 1;
       }
@@ -70,7 +70,7 @@ async function processApproveMonitor() {
 
 async function init() {
   try {
-    setInterval(async () => processApproveMonitor(), 10000);
+    setInterval(async () => processApproveMonitor(), 20000);
   } catch (error) {
     console.log(error);
   }
