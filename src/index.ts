@@ -50,6 +50,9 @@ async function processApproveMonitor() {
               fromBlock: curBN[chainIndex],
               toBlock: lastBN[chainIndex],
             });
+            console.log("=delay start=");
+            await sleep(2000)
+            console.log("=delay end=");
             console.log("approvalEvents length is %d of %s of %s: ", approvalEvents.length, config[chainIndex].ERC20List[tokenIndex], config[chainIndex].Name);
             if (approvalEvents.length > 0) {
               for (var evtIndex = 0; evtIndex < approvalEvents.length; evtIndex++) {
@@ -70,8 +73,6 @@ async function processApproveMonitor() {
         console.log(error);
       }
     }
-    console.log("=delay=");
-    await sleep(2000)
     console.log("=end=");
     console.log(" ");
   }
