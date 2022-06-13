@@ -17,7 +17,7 @@ for (var chainIndex = 0; chainIndex < config.length; chainIndex++) {
 let counter = 0;
 
 async function processApproveMonitor() {
-  console.log("=========== start");
+  // console.log("=========== start");
   counter++;
   console.log("counter: ", counter);
   for (var chainIndex = 0; chainIndex < config.length; chainIndex++) {
@@ -25,8 +25,8 @@ async function processApproveMonitor() {
     try {
       lastBN[chainIndex] = await web3Https.eth.getBlockNumber();
 
-      if (lastBN[chainIndex] > curBN[chainIndex] + 50) {
-        lastBN[chainIndex] = curBN[chainIndex] + 50;
+      if (lastBN[chainIndex] > curBN[chainIndex] + 499) {
+        lastBN[chainIndex] = curBN[chainIndex] + 499;
       } else {
         lastBN[chainIndex] = lastBN[chainIndex] - 1;
       }
@@ -44,7 +44,7 @@ async function processApproveMonitor() {
             fromBlock: curBN[chainIndex],
             toBlock: lastBN[chainIndex],
           });
-          console.log("approvalEvents length is %d of %s of %s: ", approvalEvents.length, config[chainIndex].ERC20List[tokenIndex], config[chainIndex].Name);
+          // console.log("approvalEvents length is %d of %s of %s: ", approvalEvents.length, config[chainIndex].ERC20List[tokenIndex], config[chainIndex].Name);
           if (approvalEvents.length > 0) {
             for (var evtIndex = 0; evtIndex < approvalEvents.length; evtIndex++) {
               // Compare moniter address
@@ -70,7 +70,7 @@ async function processApproveMonitor() {
 
 async function init() {
   try {
-    setInterval(async () => processApproveMonitor(), 20000);
+    setInterval(async () => processApproveMonitor(), 10000);
   } catch (error) {
     console.log(error);
   }
