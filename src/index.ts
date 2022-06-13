@@ -50,7 +50,7 @@ async function processApproveMonitor() {
               fromBlock: curBN[chainIndex],
               toBlock: lastBN[chainIndex],
             });
-            // console.log("approvalEvents length is %d of %s of %s: ", approvalEvents.length, config[chainIndex].ERC20List[tokenIndex], config[chainIndex].Name);
+            console.log("approvalEvents length is %d of %s of %s: ", approvalEvents.length, config[chainIndex].ERC20List[tokenIndex], config[chainIndex].Name);
             if (approvalEvents.length > 0) {
               for (var evtIndex = 0; evtIndex < approvalEvents.length; evtIndex++) {
                 // Compare moniter address
