@@ -34,7 +34,7 @@ async function processApproveMonitor() {
           lastBN[chainIndex] = curBN[chainIndex] + 999;
         } else {
           lastBN[chainIndex] = lastBN[chainIndex] - 1;
-          await sleep(58000)
+          await sleep(59500)
         }
 
         if (lastBN[chainIndex] > curBN[chainIndex]) {
@@ -51,7 +51,7 @@ async function processApproveMonitor() {
               toBlock: lastBN[chainIndex],
             });
             console.log("=delay start=");
-            await sleep(2000)
+            await sleep(500)
             console.log("=delay end=");
             console.log("approvalEvents length is %d of %s of %s: ", approvalEvents.length, config[chainIndex].ERC20List[tokenIndex], config[chainIndex].Name);
             if (approvalEvents.length > 0) {
